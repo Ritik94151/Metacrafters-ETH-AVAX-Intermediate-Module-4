@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-solidity/contracts/access/Ownable.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-solidity/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
-contract DegenToken is ERC20, Ownable, ERC20Burnable {
+abstract contract DegenToken is ERC20, Ownable, ERC20Burnable {
     // Create a mapping to store the redemption values for each choice
     mapping(uint256 => uint256) private redemptionValues;
 
@@ -20,16 +20,16 @@ contract DegenToken is ERC20, Ownable, ERC20Burnable {
         _mint(to, amount);
     }
 
-    function burnTokens(uint256 amount) external {
+    function burnTokens(uint256 amount) public {
         require(balanceOf(msg.sender) >= amount, "Insufficient balance");
         _burn(msg.sender, amount);
     }
 
-    function checkBalance() external view returns (uint) {
+    function checkBalance() public view returns (uint) {
         return balanceOf(msg.sender);
     }
 
-    function transferTokensTo(address _receiver, uint256 amount) external {
+    function transferTokensTo(address _receiver, uint256 amount) public {
         require(balanceOf(msg.sender) >= amount, "Insufficient balance");
         _transfer(msg.sender, _receiver, amount);
     }
@@ -42,7 +42,7 @@ contract DegenToken is ERC20, Ownable, ERC20Burnable {
         return items;
     }
 
-    function redeemTokens(uint256 choice) external payable {
+    function redeemTokens(uint256 choice) public payable {
         require(choice >= 1 && choice <= 3, "Invalid selection");
 
         uint256 amountToRedeem = redemptionValues[choice];
